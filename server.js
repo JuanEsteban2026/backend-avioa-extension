@@ -1,4 +1,4 @@
-// ==========================================
+ // ==========================================
 // ARCHIVO: server.js (BACKEND NODE/EXPRESS)
 // ==========================================
 require('dotenv').config();
@@ -41,8 +41,8 @@ app.post('/api/procesar', async (req, res) => {
             prompt = `${instruccionesFormatoLibre} Analiza para JetSmart. Devuelve JSON estricto. "genero": "Masculino" o "Femenino". "tipo_documento": "DNI/C.I.", "PASAPORTE" o "RUT". "mes_nacimiento": español capitalizado (ej. "Enero"). Faltantes: "". "nombres" y "apellidos": solo el primer nombre y el primer apellido. Texto: "${texto}" Estructura: { "pasajeros": [ { "nombres": "string", "apellidos": "string", "genero": "string", "dia_nacimiento": "string", "mes_nacimiento": "string", "ano_nacimiento": "string", "tipo_documento": "string", "numero_documento": "string", "pais_residencia": "string", "direccion": "string", "correo_electronico": "string", "codigo_pais_telefono": "string", "telefono": "string", "aadvantage": "string" } ] }`;
             forzarFormatoJSON = true;
         } else if (plataforma === "wingo") {
-            prompt = `${instruccionesFormatoLibre} Analiza para Wingo (Año 2026). Array JSON estricto, sin markdown. "genero": "Masculino" o "Femenino". "tipo_pasajero": >=12 "Adulto", 2-11 "Niño", <2 "Infante". "viaja_con": "Adulto 1" si es niño/infante, null si es adulto. "mes_nacimiento": 3 letras ("Ene", "Feb"...). Texto: "${texto}" Estructura Array: [ { "nombres": "", "apellidos": "", "genero": "", "tipo_pasajero": "", "viaja_con": "", "dia_nacimiento": "", "mes_nacimiento": "", "ano_nacimiento": "", "tipo_documento": "", "numero_documento": "", "nacionalidad": "", "pais_residencia": "", "correo_electronico": "", "codigo_pais_telefono": "", "telefono": "" } ]`;
-            modeloElegido = "gpt-3.5-turbo";
+        prompt = `${instruccionesFormatoLibre} Analiza para Wingo (Año 2026). Array JSON estricto, sin markdown. "genero": "Masculino" o "Femenino". "tipo_pasajero": >=12 "Adulto", 2-11 "Niño", <2 "Infante". "viaja_con": "Adulto 1" si es niño/infante, null si es adulto. "mes_nacimiento": 3 letras ("Ene", "Feb"...). REGLA CRÍTICA: "nombres" y "apellidos" deben contener SOLAMENTE EL PRIMER NOMBRE y EL PRIMER APELLIDO (ignora segundos nombres o segundos apellidos). Además, debes eliminar todas las tildes y caracteres especiales (por ejemplo, "Jiménez" pasa a "Jimenez", "Víctor" a "Victor"). Texto: "${texto}" Estructura Array: [ { "nombres": "", "apellidos": "", "genero": "", "tipo_pasajero": "", "viaja_con": "", "dia_nacimiento": "", "mes_nacimiento": "", "ano_nacimiento": "", "tipo_documento": "", "numero_documento": "", "nacionalidad": "", "pais_residencia": "", "correo_electronico": "", "codigo_pais_telefono": "", "telefono": "" } ]`;
+        modeloElegido = "gpt-3.5-turbo";
         } else if (plataforma === "avianca") {
             prompt = `${instruccionesFormatoLibre} Analiza para Avianca. JSON estricto. "genero": "Male" o "Female". "dia_nacimiento": solo número, sin ceros (ej. "4"). "mes_nacimiento": minúsculas en español. Año 4 dígitos. Texto: "${texto}" Estructura: { "pasajeros": [ { "nombres": "string", "apellidos": "string", "genero": "string", "dia_nacimiento": "string", "mes_nacimiento": "string", "ano_nacimiento": "string", "nacionalidad": "string" } ] }`;
             forzarFormatoJSON = true;
